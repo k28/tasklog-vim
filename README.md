@@ -1,4 +1,4 @@
-# tasklist.vim
+# tasklog.vim
 
 ## Setup
 
