@@ -43,7 +43,7 @@ if !exists('g:tasklist_task_suffix')
 endif
 
 if !exists('g:tasklist_title_pattern')
-  let g:tasklist_title_pattern = ""
+  let g:tasklist_title_pattern = "[ /\\'\"]"
 endif
 
 function! tasklist#new(title)
@@ -100,6 +100,8 @@ function! tasklist#new_with_meta(title, tags, categories)
   if stridx(items['title'], '.') == -1
     let file_name = file_name . "." . g:tasklist_task_suffix
   endif
+
+  " TODO create folder if not exist. ...?
 
   echo "Making that task " . file_name
   exe (&l:modified ? "sp" : "e") s:escarg(g:tasklist_path . "/" . file_name)
