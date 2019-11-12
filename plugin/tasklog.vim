@@ -5,10 +5,10 @@
 " Version:  0.1
 " Lisence:  VIM LICENSE
 
-"if exists('g:loaded_task_log')
-"  finish
-"endif
-"let g:loaded_task_log = 1
+if exists('g:loaded_task_list')
+  finish
+endif
+let g:loaded_task_list = 1
 
 let s:save_cpo = &cpo
 set cpo&vim

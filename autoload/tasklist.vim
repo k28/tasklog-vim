@@ -29,6 +29,7 @@ if !exists('g:tasklist_task_suffix')
   let g:tasklist_task_suffix = "markdown"
 endif
 
+" TODO delete ...
 if !exists('g:tasklist_path')
   let g:tasklist_path = "/tmp/hoge"
 endif
