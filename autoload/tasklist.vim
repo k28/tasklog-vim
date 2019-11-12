@@ -46,10 +46,6 @@ if !exists('g:tasklist_title_pattern')
   let g:tasklist_title_pattern = ""
 endif
 
-function! tasklist#hoge()
-  echo "hoge"
-endfunction
-
 function! tasklist#new(title)
   call tasklist#new_with_meta(a:title, [], [])
 endfunction
@@ -69,6 +65,18 @@ endfunction
 
 function! s:escarg(s)
   return escape(substitute(a:s, '\\', '/', 'g'), ' ')
+endfunction
+
+function! tasklist#list()
+  " TODO ADD more source support, Denite, FZF
+  if get(g:, 'tasklist_vimfiler', 0) != 0
+    " TODO test
+    exe "VimFiler" g:tasklist_vimfler_option s:escarg(g:tasklist_path)
+  elseif get(g:, 'tasklist_unite', 0) != 0
+    " TODO Code and test
+  else
+    exe "e" s:escarg(g:tasklist_path)
+  endif
 endfunction
 
 function! tasklist#new_with_meta(title, tags, categories)

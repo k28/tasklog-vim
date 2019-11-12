@@ -17,7 +17,7 @@ if !exists('g:tasklist_path')
   let g:tasklist_path = $HOME . "/tasklog"
 endif
 
-command! -nargs=0 TaskListHoge :call tasklist#hoge()
+command! -nargs=0 TaskList     :call tasklist#list()
 command! -nargs=? TaskListNew  :call tasklist#new(<q-args>)
 
 let &cpo = s:save_cpo
