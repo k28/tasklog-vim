@@ -26,7 +26,7 @@ set cpo&vim
 "
 
 if !exists('g:tasklist_task_suffix')
-  let g:tasklist_task_suffix = "markdown"
+  let g:tasklist_task_suffix = "md"
 endif
 
 " TODO delete ...
@@ -44,6 +44,10 @@ endif
 
 if !exists('g:tasklist_title_pattern')
   let g:tasklist_title_pattern = "[ /\\'\"]"
+endif
+
+if !exists('g:tasklist_task_date')
+  let g:tasklist_task_date = "%Y-%m-%d %H:%M"
 endif
 
 function! tasklist#_complete_ymdhms(...)
@@ -105,6 +109,10 @@ function! tasklist#new_with_meta(title, tags, categories)
         \ 'title' : a:title,
         \ 'date'  : localtime(),
         \}
+
+  if g:tasklist_task_date != 'epoch'
+    let items['date'] = strftime(g:tasklist_task_date)
+  endif
 
   if items['title'] == ''
     let items['title'] = input("Task title: ", "", "customlist, tasklist#_complete_ymdhms")
