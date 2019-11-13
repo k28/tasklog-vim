@@ -46,10 +46,6 @@ if !exists('g:tasklist_title_pattern')
   let g:tasklist_title_pattern = "[ /\\'\"]"
 endif
 
-function! tasklist#new(title)
-  call tasklist#new_with_meta(a:title, [], [])
-endfunction
-
 function! tasklist#_complete_ymdhms(...)
   return [strftime("%Y%m%d%H%M")]
 endfunction
@@ -77,6 +73,31 @@ function! tasklist#list()
   else
     exe "e" s:escarg(g:tasklist_path)
   endif
+endfunction
+
+function! tasklist#grep(word)
+  let word = a:word
+  if word == ''
+    let word = input("TaskGrep word: ")
+  endif
+  if word == ''
+    return
+  endif
+
+  try
+    if get(g:, 'tasklist_qfixgrep', 0) != 0
+      exe "Vimgrep -r" s:escarg(word) s:escarg(g:tasklist_path . "/*")
+    else
+      exe "vimgrep" s:escarg(word) s:escarg(g:tasklist_path . "/*")
+    endif
+  catch
+    redraw | echohl ErrorMsg | echo v:exception | echohl None
+  endtry
+
+endfunction
+
+function! tasklist#new(title)
+  call tasklist#new_with_meta(a:title, [], [])
 endfunction
 
 function! tasklist#new_with_meta(title, tags, categories)

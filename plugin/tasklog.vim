@@ -18,6 +18,7 @@ if !exists('g:tasklist_path')
 endif
 
 command! -nargs=0 TaskList     :call tasklist#list()
+command! -nargs=? TaskListGrep :call tasklist#grep(<q-args>)
 command! -nargs=? TaskListNew  :call tasklist#new(<q-args>)
 
 let &cpo = s:save_cpo
