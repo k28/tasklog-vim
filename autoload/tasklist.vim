@@ -101,7 +101,10 @@ function! tasklist#new_with_meta(title, tags, categories)
     let file_name = file_name . "." . g:tasklist_task_suffix
   endif
 
-  " TODO create folder if not exist. ...?
+  " Create directory if not exist.
+  if !isdirectory(g:tasklist_path)
+    call mkdir(iconv(g:tasklist_path, &encoding, &termencoding), 'p')
+  endif
 
   echo "Making that task " . file_name
   exe (&l:modified ? "sp" : "e") s:escarg(g:tasklist_path . "/" . file_name)
