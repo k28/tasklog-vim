@@ -14,7 +14,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 if !exists('g:tasklist_path')
-  let g:tasklist_path = $HOME . "/tasklog"
+  let g:tasklist_path = $HOME . "/tasklist"
 endif
 
 command! -nargs=0 TaskList     :call tasklist#list()

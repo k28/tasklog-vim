@@ -8,6 +8,8 @@
 "
 " g:tasklist_filename_prefix_none
 " g:tasklist_path
+" g:tasklist_current_task_dir_name
+" g:tasklist_done_task_dir_name
 " g:tasklist_template_dir_path
 " g:tasklist_task_suffix
 " g:tasklist_title_pattern
@@ -25,11 +27,20 @@ set cpo&vim
 " setting
 "
 
+if !exists('g:tasklist_current_task_dir_name')
+  let g:tasklist_current_task_dir_name = "current"
+endif
+
+if !exists('g:tasklist_done_task_dir_name')
+  let g:tasklist_done_task_dir_name = "done"
+endif
+
 if !exists('g:tasklist_task_suffix')
   let g:tasklist_task_suffix = "md"
 endif
 
 if !exists('g:tasklist_template_dir_path')
+  " TODO Fix path
   let g:tasklist_template_dir_path = "/tmp/hoge"
 endif
 
@@ -69,23 +80,48 @@ function! s:escarg(s)
   return escape(substitute(a:s, '\\', '/', 'g'), ' ')
 endfunction
 
+" task kind
+if !exists('g:tasklist_taskkind_current')
+  let g:tasklist_taskkind_all     = 0
+  let g:tasklist_taskkind_current = 1
+  let g:tasklist_taskkind_done    = 2
+endif
+
+function! tasklist#task_path(kind)
+  if a:kind == g:tasklist_taskkind_all
+    return g:tasklist_path
+  elseif a:kind == g:tasklist_taskkind_current
+    return g:tasklist_path . "/" . g:tasklist_current_task_dir_name
+  elseif a:kind == g:tasklist_taskkind_done
+    return g:tasklist_path . "/" . g:tasklist_done_task_dir_name
+  endif
+
+  " default
+  return g:tasklist_path . "/" . g:tasklist_current_task_dir_name
+endfunction
+
 function! tasklist#_complete_ymdhms(...)
   return [strftime("%Y%m%d%H%M")]
 endfunction
 
 function! tasklist#list()
+  let kind = g:tasklist_taskkind_current
+  let list_search_path = tasklist#task_path(kind)
   " TODO ADD more source support, Denite, FZF
   if get(g:, 'tasklist_vimfiler', 0) != 0
     " TODO test
-    exe "VimFiler" g:tasklist_vimfler_option s:escarg(g:tasklist_path)
+    exe "VimFiler" g:tasklist_vimfler_option s:escarg(list_search_path)
   elseif get(g:, 'tasklist_unite', 0) != 0
     " TODO Code and test
   else
-    exe "e" s:escarg(g:tasklist_path)
+    exe "e" s:escarg(list_search_path)
   endif
 endfunction
 
 function! tasklist#grep(word)
+  let kind = g:tasklist_taskkind_current
+  let grep_target_dir = tasklist#task_path(kind)
+
   let word = a:word
   if word == ''
     let word = input("TaskGrep word: ")
@@ -96,9 +132,9 @@ function! tasklist#grep(word)
 
   try
     if get(g:, 'tasklist_qfixgrep', 0) != 0
-      exe "Vimgrep -r" s:escarg(word) s:escarg(g:tasklist_path . "/*")
+      exe "Vimgrep -r" s:escarg(word) s:escarg(grep_target_dir . "/*")
     else
-      exe "vimgrep" s:escarg(word) s:escarg(g:tasklist_path . "/*")
+      exe "vimgrep" s:escarg(word) s:escarg(grep_target_dir . "/*")
     endif
   catch
     redraw | echohl ErrorMsg | echo v:exception | echohl None
@@ -117,6 +153,9 @@ function! tasklist#new_with_meta(title, tags, categories)
         \ 'tags'        : s:join_without_empty(a:tags),
         \ 'categories'  : s:join_without_empty(a:categories),
         \}
+
+  let kind = g:tasklist_taskkind_current
+  let task_create_dir_path = tasklist#task_path(kind)
 
   if g:tasklist_task_date != 'epoch'
     let items['date'] = strftime(g:tasklist_task_date)
@@ -139,14 +178,14 @@ function! tasklist#new_with_meta(title, tags, categories)
   endif
 
   " Create directory if not exist.
-  if !isdirectory(g:tasklist_path)
-    call mkdir(iconv(g:tasklist_path, &encoding, &termencoding), 'p')
+  if !isdirectory(task_create_dir_path)
+    call mkdir(iconv(task_create_dir_path, &encoding, &termencoding), 'p')
   endif
 
   echo "Making that task " . file_name
-  exe (&l:modified ? "sp" : "e") s:escarg(g:tasklist_path . "/" . file_name)
+  exe (&l:modified ? "sp" : "e") s:escarg(task_create_dir_path . "/" . file_name)
 
-  if !filereadable(s:escarg(g:tasklist_path . "/" . file_name))
+  if !filereadable(s:escarg(task_create_dir_path . "/" . file_name))
     " task template
     let template = s:default_template
     if g:tasklist_template_dir_path != ""
