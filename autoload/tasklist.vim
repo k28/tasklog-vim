@@ -29,11 +29,6 @@ if !exists('g:tasklist_task_suffix')
   let g:tasklist_task_suffix = "md"
 endif
 
-" TODO delete ...
-if !exists('g:tasklist_path')
-  let g:tasklist_path = "/tmp/hoge"
-endif
-
 if !exists('g:tasklist_template_dir_path')
   let g:tasklist_template_dir_path = "/tmp/hoge"
 endif
@@ -50,8 +45,15 @@ if !exists('g:tasklist_task_date')
   let g:tasklist_task_date = "%Y-%m-%d %H:%M"
 endif
 
-function! tasklist#_complete_ymdhms(...)
-  return [strftime("%Y%m%d%H%M")]
+if !exists('g:tasklist_delimiter_yaml_array')
+  let g:tasklist_delimiter_yaml_array = " "
+endif
+
+function! s:join_without_empty(list, ...)
+  if empty(a:list) | return '' | endif
+  let pattern = a:0 > 0 ? a:1 : '\v\s+'
+  return join(type(a:list) == type([]) ? a:list : split(a:list, pattern),
+        \ g:tasklist_delimiter_yaml_array)
 endfunction
 
 function! s:esctitle(str)
@@ -65,6 +67,10 @@ endfunction
 
 function! s:escarg(s)
   return escape(substitute(a:s, '\\', '/', 'g'), ' ')
+endfunction
+
+function! tasklist#_complete_ymdhms(...)
+  return [strftime("%Y%m%d%H%M")]
 endfunction
 
 function! tasklist#list()
@@ -106,8 +112,10 @@ endfunction
 
 function! tasklist#new_with_meta(title, tags, categories)
   let items = {
-        \ 'title' : a:title,
-        \ 'date'  : localtime(),
+        \ 'title'       : a:title,
+        \ 'date'        : localtime(),
+        \ 'tags'        : s:join_without_empty(a:tags),
+        \ 'categories'  : s:join_without_empty(a:categories),
         \}
 
   if g:tasklist_task_date != 'epoch'
@@ -163,8 +171,8 @@ let s:default_template = [
       \ 'title: {{_title_}}',
       \ '========',
       \ 'date: {{_date_}}',
-      \ 'tags: {{_tags_}}',
-      \ 'categories: {{_categories_}}',
+      \ 'tags: [{{_tags_}}]',
+      \ 'categories: [{{_categories_}}]',
       \ '- - -',
       \]
 
