@@ -88,16 +88,41 @@ if !exists('g:tasklist_taskkind_current')
 endif
 
 function! tasklist#task_path(kind)
+  let tasklist_full_path = expand(g:tasklist_path)
   if a:kind == g:tasklist_taskkind_all
-    return g:tasklist_path
+    return tasklist_full_path
   elseif a:kind == g:tasklist_taskkind_current
-    return g:tasklist_path . "/" . g:tasklist_current_task_dir_name
+    return tasklist_full_path . "/" . g:tasklist_current_task_dir_name
   elseif a:kind == g:tasklist_taskkind_done
-    return g:tasklist_path . "/" . g:tasklist_done_task_dir_name
+    return tasklist_full_path . "/" . g:tasklist_done_task_dir_name
   endif
 
   " default
-  return g:tasklist_path . "/" . g:tasklist_current_task_dir_name
+  return tasklist_full_path . "/" . g:tasklist_current_task_dir_name
+endfunction
+
+function! tasklist#movefile(src, target)
+  
+endfunction
+
+function! tasklist#done()
+  " move task file to done directory
+  let current_file_dir = expand("%:p:h")
+  if current_file_dir != tasklist#task_path(g:tasklist_taskkind_current)
+    echomsg current_file_dir . ": return" 
+    return
+  endif
+
+  let file_name = expand("%:t")
+  let rename_src_file_path = expand("%:p")
+  let target_file_path = tasklist#task_path(g:tasklist_taskkind_done) . "/" . file_name
+  if rename(rename_src_file_path, target_file_path) == 0
+    execute("edit " . target_file_path)
+    if delete(rename_src_file_path) != 0
+      " TODO delete always error, but delete success...
+      echomsg "delete failed...."
+    endif
+  endif
 endfunction
 
 function! tasklist#_complete_ymdhms(...)
