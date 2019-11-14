@@ -1,5 +1,5 @@
 " ===========================================================
-" タスクのログ管理する
+" Manage task as log.
 " File:     tasklog.vim
 " Author:   k28 <k28@me.com>
 " Version:  0.1
@@ -80,13 +80,6 @@ function! s:escarg(s)
   return escape(substitute(a:s, '\\', '/', 'g'), ' ')
 endfunction
 
-" task kind
-if !exists('g:tasklist_taskkind_current')
-  let g:tasklist_taskkind_all     = 0
-  let g:tasklist_taskkind_current = 1
-  let g:tasklist_taskkind_done    = 2
-endif
-
 function! tasklist#task_path(kind)
   let tasklist_full_path = expand(g:tasklist_path)
   if a:kind == g:tasklist_taskkind_all
@@ -129,9 +122,8 @@ function! tasklist#_complete_ymdhms(...)
   return [strftime("%Y%m%d%H%M")]
 endfunction
 
-function! tasklist#list()
-  let kind = g:tasklist_taskkind_current
-  let list_search_path = tasklist#task_path(kind)
+function! tasklist#list(kind)
+  let list_search_path = tasklist#task_path(a:kind)
   " TODO ADD more source support, Denite, FZF
   if get(g:, 'tasklist_vimfiler', 0) != 0
     " TODO test
