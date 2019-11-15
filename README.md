@@ -1,6 +1,6 @@
 # tasklog-vim
 
-This is a vimscript for create and manage task. tasklist-vim is inspired by [memolist.vim](https://github.com/glidenote/memolist.vim).
+This is a vimscript for create and manage task. tasklog-vim is inspired by [memolist.vim](https://github.com/glidenote/memolist.vim).
 
 ## Setup
 - Set task directory (default is #HOME/taskllog)
