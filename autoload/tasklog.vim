@@ -40,12 +40,11 @@ if !exists('g:tasklog_task_suffix')
 endif
 
 if !exists('g:tasklog_template_dir_path')
-  " TODO Fix path
-  let g:tasklog_template_dir_path = "/tmp/hoge"
+  let g:tasklog_template_dir_path = g:tasklog_path
 endif
 
-if !exists('g:tasklog_task_suffix')
-  let g:tasklog_task_suffix = "md"
+if !exists('g:tasklog_template_file_name')
+  let g:tasklog_template_file_name = "template.txt"
 endif
 
 if !exists('g:tasklog_title_pattern')
@@ -214,7 +213,7 @@ function! tasklog#new_with_meta(title, tags, categories)
     let template = s:default_template
     if g:tasklog_template_dir_path != ""
       let path = expand(g:tasklog_template_dir_path, ":p")
-      let path = path . "/" . g:tasklog_task_suffix . ".txt"
+      let path = path . "/" . g:tasklog_template_file_name
       if filereadable(path)
         let template = readfile(path)
       endif
