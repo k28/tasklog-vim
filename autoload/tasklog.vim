@@ -134,11 +134,11 @@ function! tasklog#list(kind)
   " TODO ADD more source support, Denite, FZF
   if get(g:, 'tasklog_vimfiler', 0) != 0
     " TODO test
-    exe "VimFiler" g:tasklog_vimfler_option s:escarg(list_search_path)
+    execute "VimFiler" g:tasklog_vimfler_option s:escarg(list_search_path)
   elseif get(g:, 'tasklog_unite', 0) != 0
     " TODO Code and test
   else
-    exe "e" s:escarg(list_search_path)
+    execute "edit" s:escarg(list_search_path)
   endif
 endfunction
 
