@@ -1,0 +1,93 @@
+*tasklog.txt*       タスクをファイルで管理します
+
+Version: 1.0
+Author : k28 <k28@me.com>
+License: VIM LICENSE
+
+=============================================================================
+目次                    *tasklog-contents*
+
+概要                    |tasklog-introduction|
+インターフェース        |tasklog-interface|
+  コマンド              |tasklog-commands|
+カスタマイズ            |tasklog-customizing|
+更新履歴                |tasklog-changelog|
+
+=============================================================================
+概要                        *tasklog-introduction*
+
+*tasklog-vim*は、タスクをテキストファイルで管理するためのプラグインです。タス
+クファイルを以下のフォルダ構成で管理します。>
+tasklog
+├── current
+│   ├── 2019-11-15-task2.md
+│   └── 2019-11-16-task3.md
+└── done
+    └── 2019-11-13-task1.md
+<
+currentが進行中のタスク。終了したタスクはdoneフォルダに移動します。
+
+要件:
+- Vim 7.4以降?
+
+最新版:
+https://github.com/k28/tasklog-vim.git
+
+=============================================================================
+インターフェース        *tasklog-interface*
+
+------------------------------------------------------------------------------
+コマンド                *tasklog-commands*
+
+:TaskNew                *:TaskNew*
+                        新しいタスクを作成します。
+
+:TaskLog                *:TaskLog*
+                        タスクのリストを表示します。
+
+:TaskLogDoneList        *:TaskLogDoneList*
+                        完了したタスクのリストを表示します。
+
+:TaskLogAllList         *:TaskLogAllList*
+                        完了したタスクを含め、全てのリストを表示します。
+
+:TaskLogDone            *:TaskLogDone*
+                        開いているタスクを完了フォルダに移動します。
+
+:TaskLogGrep            *TaskLogGrep*
+                        タスクリスト内をGrep検索します。
+
+==============================================================================
+カスタマイズ            *tasklog-customizing*
+
+g:tasklog_path          *g:tasklog_path*
+                        タスクを保存するフォルダを指定します。
+
+g:tasklog_current_task_dir_name         *g:tasklog_current_task_dir_name*
+                        進行中のタスクを保存するフォルダ名を指定します。
+                        デフォルト:current
+
+g:tasklog_done_task_dir_name     *g:tasklog_done_task_dir_name*
+                        終了したタスクを保存するフォルダ名を指定します。
+                        デフォルト:done
+
+g:tasklog_task_suffix           *g:tasklog_task_suffix*
+                        タスクの拡張子を指定します。
+                        デフォルト:md
+
+g:tasklog_template_dir_path     *g:tasklog_template_dir_path*
+                        新規作成タスクのテンプレートファイルを置くフォルダを指
+定します。
+                        デフォルト:|g:tasklog_path|と同じ
+
+g:tasklog_template_file_name    *g:tasklog_template_file_name*
+                        テンプレートファイルの名称を指定します。
+                        デフォルト:template.txt
+
+==============================================================================
+更新履歴                *tasklog-changelog*
+
+0.1                     2019-11-18
+                        - 作成中
+==============================================================================
+vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl
