@@ -1,8 +1,9 @@
 *tasklog.txt*       タスクをファイルで管理します
 
-Version: 1.0
-Author : k28 <k28@me.com>
-License: VIM LICENSE
+Version     : 1.0
+Author      : k28 <k28@me.com>
+Repository  : https://github.com/k28/tasklog-vim.git
+License     : VIM LICENSE
 
 =============================================================================
 目次                    *tasklog-contents*
@@ -26,18 +27,13 @@ tasklog
     └── 2019-11-13-task1.md
 <
 currentが進行中のタスク。終了したタスクはdoneフォルダに移動します。
-タスク作成は以下の流れを想定しています。
+
+タスク管理は以下の流れを想定しています。
 
 1. `:TaskNew` で新しいタスクを作成する
 2. タスクを編集する
 3. `:TaskList` で既存のタスクを検索する
 4. `:TaskListDone` で終わったタスクを終了フォルダに移動する
-
-要件:
-- Vim 7.4以降?
-
-最新版:
-https://github.com/k28/tasklog-vim.git
 
 =============================================================================
 インターフェース        *tasklog-interface*

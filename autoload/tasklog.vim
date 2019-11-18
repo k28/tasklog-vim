@@ -2,7 +2,7 @@
 " Manage task as log.
 " File:     tasklog.vim
 " Author:   k28 <k28@me.com>
-" Version:  0.1
+" Version:  1.0
 " Lisence:  VIM LICENSE
 
 "

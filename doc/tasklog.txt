@@ -1,0 +1,95 @@
+*tasklog.txt*       Manage task by the file.
+
+Version     : 1.0
+Author      : k28 <k28@me.com>
+Repository  : https://github.com/k28/tasklog-vim.git
+License     : VIM LICENSE
+
+=============================================================================
+CONTENTS                        *tasklog-contents*
+
+Introduction                    |tasklog-introduction|
+Interface                       |tasklog-interface|
+  Commands                      |tasklog-commands|
+Customizing                     |tasklog-customizing|
+Changelog                       |tasklog-changelog|
+
+=============================================================================
+INTRODUCTION                    *tasklog-introduction*
+
+*tasklog-vim* manage the task by simple text.
+Folder structure is below.>
+tasklog
+├── current
+│   ├── 2019-11-15-task2.md
+│   └── 2019-11-16-task3.md
+└── done
+    └── 2019-11-13-task1.md
+<
+current folder has current task. Move finished task to the done folder.
+
+Task management assumes the following flow.
+
+1. `:TaskNew` Create new task.
+2. do some work.
+3. `:TaskList` Search task.
+4. `:TaskListDone` Move finished task to done folder.
+
+=============================================================================
+INTERFACE               *tasklog-interface*
+
+------------------------------------------------------------------------------
+COMMANDS                *tasklog-commands*
+
+:TaskNew                *:TaskNew*
+                        Create new task file.
+
+:TaskLog                *:TaskLog*
+                        Show task list.
+
+:TaskLogDoneList        *:TaskLogDoneList*
+                        Show done task list.
+
+:TaskLogAllList         *:TaskLogAllList*
+                        Show all tasks. (includes finished tasks)
+
+:TaskLogDone            *:TaskLogDone*
+                        Mode current task to done folder.
+
+:TaskLogGrep            *TaskLogGrep*
+                        Grep in task list.
+
+==============================================================================
+CUSTOMIZING             *tasklog-customizing*
+
+g:tasklog_path          *g:tasklog_path*
+                        Specify the path to save the task.
+
+g:tasklog_current_task_dir_name         *g:tasklog_current_task_dir_name*
+                        Specify the name to save the current task.
+                        default:current
+
+g:tasklog_done_task_dir_name     *g:tasklog_done_task_dir_name*
+                        Specify the name to save the finished task.
+                        default:done
+
+g:tasklog_task_suffix           *g:tasklog_task_suffix*
+                        Specify the suffix to the task file.
+                        default:md
+
+g:tasklog_template_dir_path     *g:tasklog_template_dir_path*
+                        Specify the path to the template file.
+                        default:same as |g:tasklog_path|.
+
+g:tasklog_template_file_name    *g:tasklog_template_file_name*
+                        Specify the template file name.
+                        default:template.txt
+
+==============================================================================
+CHANGELOG               *tasklog-changelog*
+
+1.0                     2019-11-19
+                        - New
+
+==============================================================================
+vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl
